@@ -2,11 +2,10 @@
 Android/Java Nanodegree UdaCity program by Google - Problem set 9
 
 Thie project is SQLite - practice with Database task.
-The project donot included UI.
+The project donot use UI.
 
-The app is 
 
-The result is printed in logcat, and methods are implemented in onCreate in MainActivity.
+The result is printed in logcat, and methods are implemented in DBHelper Class and called in MainActivity on instance of DBHelper Class. (modified)
 
 Project included:
 1. UserInput Class - Let's assume that these are User Imputs in EditText field in UI;
