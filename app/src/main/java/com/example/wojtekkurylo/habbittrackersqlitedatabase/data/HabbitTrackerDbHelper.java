@@ -16,7 +16,7 @@ import com.example.wojtekkurylo.habbittrackersqlitedatabase.data.HabbitTrackerCo
 public class HabbitTrackerDbHelper extends SQLiteOpenHelper {
 
 	// If you change the database schema, you must increment the database version.
-	private static final int DATABASE_VERSION = 3;
+	private static final int DATABASE_VERSION = 2;
 	private static final String DATABASE_NAME = "habbit.db";
 
 
@@ -29,34 +29,16 @@ public class HabbitTrackerDbHelper extends SQLiteOpenHelper {
 					HabbitEntry.COMPUTER_HR + " INTEGER DEFAULT 0," +
 					HabbitEntry.JUST_RELAX_HR + " INTEGER DEFAULT 0," +
 					HabbitEntry.SPORT_NAME + " TEXT," +
-					HabbitEntry.SPORT_TIME_MIN + " INTEGER DEFAULT 0)";
+					HabbitEntry.SPORT_TIME_MIN + " INTEGER DEFAULT 0," +
+					HabbitEntry.ALTER_COLUMN_ONE + " TEXT)";
 
-	// Constants used while onCreate and/or onUpgrade is called by constructor - VERSION 2
-	private static final String SQL_CREATE_ENTRIES_VERSION_TWO =
-			"CREATE TABLE " + HabbitEntry.TABLE_NAME + " (" +
-					HabbitEntry.ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
-					HabbitEntry.SLEEP_TIME_HR + " INTEGER NOT NULL," +
-					HabbitEntry.WALKING_WITH_DOG_MIN + " INTEGER DEFAULT 0," +
-					HabbitEntry.COMPUTER_HR + " INTEGER DEFAULT 0," +
-					HabbitEntry.JUST_RELAX_HR + " INTEGER DEFAULT 0," +
-					HabbitEntry.SPORT_NAME + " TEXT," +
-					HabbitEntry.SPORT_TIME_MIN + " INTEGER DEFAULT 0)";
-
-	// Constants used while onCreate and/or onUpgrade is called by constructor - VERSION 3
-	private static final String SQL_CREATE_ENTRIES_VERSION_THREE =
-			"CREATE TABLE " + HabbitEntry.TABLE_NAME + " (" +
-					HabbitEntry.ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
-					HabbitEntry.SLEEP_TIME_HR + " INTEGER NOT NULL," +
-					HabbitEntry.WALKING_WITH_DOG_MIN + " INTEGER DEFAULT 0," +
-					HabbitEntry.COMPUTER_HR + " INTEGER DEFAULT 0," +
-					HabbitEntry.JUST_RELAX_HR + " INTEGER DEFAULT 0," +
-					HabbitEntry.SPORT_NAME + " TEXT," +
-					HabbitEntry.SPORT_TIME_MIN + " INTEGER DEFAULT 0)";
-
+	// Update of Data Base
+	private static final String DATABASE_ALTER_TEAM_1 =
+			"ALTER TABLE " + HabbitEntry.TABLE_NAME + " ADD COLUMN " +
+					HabbitEntry.ALTER_COLUMN_ONE + " TEXT";
 
 	private static final String SQL_DELETE_ENTRIES =
 			"DROP TABLE IF EXISTS " + HabbitEntry.TABLE_NAME;
-
 
 	/**
 	 * Public Constructor
@@ -69,26 +51,20 @@ public class HabbitTrackerDbHelper extends SQLiteOpenHelper {
 
 	@Override
 	public void onCreate(SQLiteDatabase db) {
-		db.execSQL(SQL_CREATE_ENTRIES_VERSION_THREE);
+		db.execSQL(SQL_CREATE_ENTRIES);
 	}
 
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-		// This database is only a cache for online data, so its upgrade policy is
-		// to simply discard the data and start over
-
-		// ISSUE : User is loosing all data while onUpgrade calling - to be developed
+		// If database version == 1 do the following :
 
 		switch (oldVersion) {
 			case 1:
-				db.execSQL(SQL_DELETE_ENTRIES);
-				db.execSQL(SQL_CREATE_ENTRIES_VERSION_TWO);
-			case 2:
-				db.execSQL(SQL_DELETE_ENTRIES);
-				db.execSQL(SQL_CREATE_ENTRIES_VERSION_THREE);
-
-
+				db.execSQL(DATABASE_ALTER_TEAM_1);
 		}
+
+
+
 	}
 
 	public void putDailyHabbitSummaryNoOne() {
@@ -111,6 +87,7 @@ public class HabbitTrackerDbHelper extends SQLiteOpenHelper {
 		// UserInput.SPORT_NAME_NO1 == String Object
 		values.put(HabbitEntry.SPORT_NAME, UserInput.sportNameNoOne);
 		values.put(HabbitEntry.SPORT_TIME_MIN, sportTimeNoOne);
+		values.put(HabbitEntry.ALTER_COLUMN_ONE,"first value");
 
 		// Insert the new row, returning the primary key value of the new row
 		long newRowId = db.insert(HabbitEntry.TABLE_NAME, null, values);
@@ -155,7 +132,8 @@ public class HabbitTrackerDbHelper extends SQLiteOpenHelper {
 				HabbitEntry.COMPUTER_HR,
 				HabbitEntry.JUST_RELAX_HR,
 				HabbitEntry.SPORT_NAME,
-				HabbitEntry.SPORT_TIME_MIN
+				HabbitEntry.SPORT_TIME_MIN,
+				HabbitEntry.ALTER_COLUMN_ONE
 		};
 
 		// store in Cursor instance all rows from database table "DailyRoutine" with selected columns of interest
@@ -189,6 +167,7 @@ public class HabbitTrackerDbHelper extends SQLiteOpenHelper {
 			int relaxColumnIndex = cursor.getColumnIndex(HabbitEntry.JUST_RELAX_HR);
 			int sportNameColumnIndex = cursor.getColumnIndex(HabbitEntry.SPORT_NAME);
 			int sportTimeColumnIndex = cursor.getColumnIndex(HabbitEntry.SPORT_TIME_MIN);
+			int alterOneColumnIndex = cursor.getColumnIndex(HabbitEntry.ALTER_COLUMN_ONE);
 
 			// Taking columns name
 			String idColumnName = cursor.getColumnName(idColumnIndex);
@@ -198,6 +177,7 @@ public class HabbitTrackerDbHelper extends SQLiteOpenHelper {
 			String relaxColumnName = cursor.getColumnName(relaxColumnIndex);
 			String sportNameColumnName = cursor.getColumnName(sportNameColumnIndex);
 			String sportTimeColumnName = cursor.getColumnName(sportTimeColumnIndex);
+			String alterOneColumnName = cursor.getColumnName(alterOneColumnIndex);
 
 			// Taking value of cursor position
 			String cursorCurrentPosName = String.valueOf(cursor.getPosition());
@@ -211,6 +191,7 @@ public class HabbitTrackerDbHelper extends SQLiteOpenHelper {
 					relaxColumnName + "--" +
 					sportNameColumnName + "--" +
 					sportTimeColumnName + "--" +
+					alterOneColumnName + "--" +
 					"CursorCurrentRow int: " + cursorCurrentPosName + "\n"
 			);
 
@@ -224,6 +205,7 @@ public class HabbitTrackerDbHelper extends SQLiteOpenHelper {
 				int relaxCurrentRow = cursor.getInt(relaxColumnIndex);
 				String sportNameCurrentRowString = cursor.getString(sportNameColumnIndex);
 				int sportTimeCurrentRow = cursor.getInt(sportTimeColumnIndex);
+				String alterOneCurrentRowString =  cursor.getString(alterOneColumnIndex);
 
 				// Taking value from each Column x Row ID
 				String idCurrentRowString = String.valueOf(idCurrentRow);
@@ -244,6 +226,7 @@ public class HabbitTrackerDbHelper extends SQLiteOpenHelper {
 						relaxCurrentRowString + "--" +
 						sportNameCurrentRowString + "--" +
 						sportTimeCurrentRowString + "--" +
+						alterOneCurrentRowString + "--" +
 						"CursorRow: " + cursorCurrentPos + "\n");
 			}
 

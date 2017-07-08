@@ -31,5 +31,6 @@ public class HabbitTrackerContract {
 		public static final String JUST_RELAX_HR = "just_relax_hr";
 		public static final String SPORT_NAME = "sport_name";
 		public static final String SPORT_TIME_MIN = "sport_time_min";
+		public static final String ALTER_COLUMN_ONE = "alter_column_one";
 	}
 }
