@@ -256,8 +256,8 @@ public class HabbitTrackerDbHelper extends SQLiteOpenHelper {
 	}
 
 	public void deleteTable(){
-		// Gets the data repository in read mode
-		SQLiteDatabase db = getReadableDatabase();
+		// Gets the data repository in write mode
+		SQLiteDatabase db = getWritableDatabase();
 
 		//Convenience method for deleting rows in the database.
 		// Delete all rows
