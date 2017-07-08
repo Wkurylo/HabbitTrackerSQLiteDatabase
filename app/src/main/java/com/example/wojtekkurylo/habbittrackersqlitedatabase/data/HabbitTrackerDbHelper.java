@@ -7,7 +7,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-import com.example.wojtekkurylo.habbittrackersqlitedatabase.MainActivity;
 import com.example.wojtekkurylo.habbittrackersqlitedatabase.data.HabbitTrackerContract.HabbitEntry;
 
 /**
@@ -17,8 +16,8 @@ import com.example.wojtekkurylo.habbittrackersqlitedatabase.data.HabbitTrackerCo
 public class HabbitTrackerDbHelper extends SQLiteOpenHelper {
 
 	// If you change the database schema, you must increment the database version.
-	public static final int DATABASE_VERSION = 3;
-	public static final String DATABASE_NAME = "habbit.db";
+	private static final int DATABASE_VERSION = 3;
+	private static final String DATABASE_NAME = "habbit.db";
 
 
 	// Constants used while onCreate and/or onUpgrade is called by constructor
@@ -33,7 +32,7 @@ public class HabbitTrackerDbHelper extends SQLiteOpenHelper {
 					HabbitEntry.SPORT_TIME_MIN + " INTEGER DEFAULT 0)";
 
 	// Constants used while onCreate and/or onUpgrade is called by constructor - VERSION 2
-	public static final String SQL_CREATE_ENTRIES_VERSION_TWO =
+	private static final String SQL_CREATE_ENTRIES_VERSION_TWO =
 			"CREATE TABLE " + HabbitEntry.TABLE_NAME + " (" +
 					HabbitEntry.ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
 					HabbitEntry.SLEEP_TIME_HR + " INTEGER NOT NULL," +
@@ -44,7 +43,7 @@ public class HabbitTrackerDbHelper extends SQLiteOpenHelper {
 					HabbitEntry.SPORT_TIME_MIN + " INTEGER DEFAULT 0)";
 
 	// Constants used while onCreate and/or onUpgrade is called by constructor - VERSION 3
-	public static final String SQL_CREATE_ENTRIES_VERSION_THREE =
+	private static final String SQL_CREATE_ENTRIES_VERSION_THREE =
 			"CREATE TABLE " + HabbitEntry.TABLE_NAME + " (" +
 					HabbitEntry.ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
 					HabbitEntry.SLEEP_TIME_HR + " INTEGER NOT NULL," +
@@ -55,7 +54,7 @@ public class HabbitTrackerDbHelper extends SQLiteOpenHelper {
 					HabbitEntry.SPORT_TIME_MIN + " INTEGER DEFAULT 0)";
 
 
-	public static final String SQL_DELETE_ENTRIES =
+	private static final String SQL_DELETE_ENTRIES =
 			"DROP TABLE IF EXISTS " + HabbitEntry.TABLE_NAME;
 
 
@@ -78,7 +77,7 @@ public class HabbitTrackerDbHelper extends SQLiteOpenHelper {
 		// This database is only a cache for online data, so its upgrade policy is
 		// to simply discard the data and start over
 
-		// TODO: ISSUE : User is loosing all data while onUpgrade calling - to be developed
+		// ISSUE : User is loosing all data while onUpgrade calling - to be developed
 
 		switch (oldVersion) {
 			case 1:

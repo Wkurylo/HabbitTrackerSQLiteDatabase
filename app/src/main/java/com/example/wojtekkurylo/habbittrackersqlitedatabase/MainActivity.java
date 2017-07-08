@@ -18,7 +18,7 @@ public class MainActivity extends AppCompatActivity {
 
 		//Delete all rows & reset the Autoincrement
 		mInstanceDbHelper.deleteTable();
-		// Put data from user input
+		// Put data from user inputs
 		mInstanceDbHelper.putDailyHabbitSummaryNoOne();
 		// Update existing value
 		mInstanceDbHelper.updateSportName();
